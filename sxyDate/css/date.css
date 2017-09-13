@@ -1,0 +1,111 @@
+
+html, body, div, ul, li{
+    margin: 0;
+    padding: 0;
+}
+.date{
+    width: 100%;
+    position: relative;
+    margin: 0 auto;
+    color: #616d6b;
+}
+.date ul{
+    width: 100%;
+    font-size: 0;
+}
+.day-down {
+    border: none;
+    width: 100%;
+    display: block;
+    height: 2rem;
+    background: rgba(0,0,0,0);
+    font-size: 1.5rem;
+    outline: 0;
+}
+.date ul li{
+    list-style: none;
+    font-size: 1.2rem;
+    display: inline-block;
+    width: 14.2857%;
+    vertical-align: top;
+}
+.date ul li:nth-last-child(1){
+    color:#91ded4;
+}
+.date ul li:nth-child(1){
+    color:#91ded4;
+}
+.date .week{
+    height: 2rem;
+    background-color: rgba(0,0,0,1);
+    background-color: rgb(19, 195, 179); 
+    color: #fff;
+    margin-bottom: 1rem;
+    text-align: center;
+    line-height: 2rem;
+}
+.date .title{
+    background-color: rgb(69, 156, 148);
+    color: #fff;
+    text-align: center;
+    padding: .6rem 0;
+}
+.date .title #price{
+    font-size: 1.4rem;
+    text-align: right;
+    cursor: pointer;
+}
+.date .title #next{
+    font-size: 1.4rem;
+    text-align: left;
+    cursor: pointer;
+}
+.date .title{
+    display: table;
+}
+.date .title li{
+    /* width: 100%; */
+    display: table-cell;
+    font-size: 1.4rem;
+    vertical-align: middle;
+    font-size: 2rem;
+    text-align: center;
+}
+.date .day li{
+    min-height: 2.6rem;
+    margin-bottom: 8px;
+}
+.date .day li .day-up{
+    text-align: center;
+}
+.date .day li .day-down{
+    font-size: .8rem;
+    text-align: center;
+}
+/* 选中的样式 */
+.date .day .day-select{
+    background-color: #91ded4;
+    color: #fff;
+}
+.date .day .day-select-today{
+    background-color: #91ded4;
+    color: #fff;
+}
+/* 不是本月日期的样式 */
+.date .day .day-unday{
+    color: #d8d8d8;
+}
+#title-year {
+    width: 60%;
+}
+.sure {
+    border: none;
+    width: 4rem;
+    height: 2rem;
+    background: rgb(19, 195, 179);
+    color: #fff;
+    display: inline-block;
+}
+.button {
+    text-align: center;
+}

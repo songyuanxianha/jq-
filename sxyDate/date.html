@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no, initial-scale=1">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <link rel="stylesheet" href="./css/date.css">
+    <title>中信嘉丽泽</title>
+</head>
+
+<body>
+    <div class="date" id="priceDate">
+        <ul class="title">
+            <li id="title-year"></li>
+        </ul>
+        <ul class="week">
+            <li>日</li>
+            <li>一</li>
+            <li>二</li>
+            <li>三</li>
+            <li>四</li>
+            <li>五</li>
+            <li>六</li>
+        </ul>
+        <div class="day">
+
+        </div>
+        <div class="button">
+            <input type="button" class="sure" value="确定" onclick="getInputVal()">
+        </div>
+    </div>
+    </div>
+    <script src="./js/jquery-2.1.4.min.js"></script>
+    <script>
+        function syxDate(m) {
+            // 获取当前时间
+            var date = new Date();
+            var year = yearBack = date.getFullYear();
+            var month = monthBack = date.getMonth();
+            var week = weekBack = date.getDay();
+            var day = dayBack = date.getDate();
+            var _setDate = '';
+            // 设置日历价格
+            var price = '';
+            // 年
+            var priceYear = date.getFullYear();
+            var priceMonth = '';
+            // 原型链
+            var that = this;
+            that.pro = syxDate.prototype;
+            // 计算日期 0表示这个月,-1表示上个月,1表示下个月
+            function setDates(d) {
+                var y = '',
+                    m = '',
+                    i = monthBack + d;
+                if (i >= 12) {
+                    if ((i / 12) < 1) {
+                        y = yearBack;
+                    } else {
+                        y = Math.floor(i / 12) + yearBack;
+                    }
+                    if (i > 11) {
+                        m = i % 12;
+                    } else {
+                        m = i;
+                    }
+                } else if (i <= 12) {
+                    if ((i / 12) >= 0) {
+                        y = yearBack;
+                    } else {
+                        y = Math.floor(i / 12) + yearBack;
+                    }
+                    if (i <= 11 && i >= 0) {
+                        m = i % 12;
+                    } else {
+                        if(i % 12 != 0){
+                            m = i % 12 + 12;
+                        }else{
+                            m = 0;
+                        }
+                    }
+                    m = Math.abs(m);
+                }
+                // console.log(y+"   "+m);
+                _setDate = [y,m];
+                return _setDate;
+            }
+            // 获取当月天数
+            function getCountDays(i) {
+                var setd = setDates(i);
+                var d = new Date(setd[0],setd[1]);
+                d.setDate(0);
+                return d.getDate();
+            };
+            // 获取当月第一天是星期几
+            function getFirstDay(i) {
+                var setd = setDates(i);
+                var d = new Date(setd[0],setd[1]);
+                d.setDate(1);
+                return d.getDay();
+            }
+            // 循环日历 0表示这个月,-1表示上个月,1表示下个月
+            that.pro.forDay = function (m) {
+                var mo = 1 + m;
+                // 获取这个月天数
+                var days = getCountDays(mo);
+                // 获取上个月多少天
+                var upDays = getCountDays(mo - 1);
+                // 获取1号是星期几
+                var firstDay = getFirstDay(m);
+                // 计算总的行数
+                var dayLine = Math.ceil((firstDay + days) / 7);
+                var upNum = upDays;
+                var Num = 0;
+                var nextNum = 0;
+                var htmlStart = '<ul>';
+                var htmlEnd = '</ul>';
+                var html = '';
+                var htmlAll = '';
+                var rep = /[\.]/;
+                // 循环生成天数
+                for (var i = 1; i <= dayLine; i++) {
+                    for (var j = 0; j < 7; j++) {
+                        // 判定是否是第一行
+                        if (i == 1) {
+                            // 判定是从什么时候开始
+                            if (j < firstDay) {
+                                // console.log()
+                                upNum -= (firstDay - j);
+                                html += '<li class="day-unday">' +
+                                    '<div class="day-up">' + (upNum + 1) + '</div>' +
+                                    '<input type="text" class="day-down">' + price + '</li>'
+                                upNum = upDays;
+                            } else {
+                                Num++;
+                                html += '<li>' +
+                                    '<div class="day-up">' + Num + '</div>' +
+                                    '<input type="text" class="day-down">' + price + '</li>'
+                            }
+
+                        }
+                        // 判定是否是最后一行
+                        else if (i == dayLine) {
+                            if (Num < days) {
+                                Num++;
+                                html += '<li>' +
+                                    '<div class="day-up">' + Num + '</div>' +
+                                    '<input type="text" class="day-down">' + price + '</li>'
+                            } else {
+                                nextNum++;
+                                html += '<li class="day-unday">' +
+                                    '<div class="day-up">' + nextNum + '</div>' +
+                                    '<input type="text" class="day-down">' + price + '</li>'
+                            }
+                        }
+                        // 中间行
+                        else {
+                            Num++;
+                            html += '<li>' +
+                                '<div class="day-up">' + Num + '</div>' +
+                                '<input type="text" class="day-down">' + price + '</li>'
+                        }
+                    }
+                    htmlAll += htmlStart + html + htmlEnd;
+                    html = '';
+                }
+                // 拼接
+                // html = htmlStart + html + htmlEnd;
+                // 显示到Dom
+                // $('#priceDate').append(html);
+                $('#priceDate .day').html(htmlAll);
+                // 设置年份月份的显示
+                if (Math.ceil((month + mo) / 12) > 1) {
+                    if (rep.test((month + mo) / 12)) {
+                        priceYear = year + parseInt((month + mo) / 12);
+                    } else {
+                        priceYear = year + (((month + mo) / 12) - 1);
+                    }
+                    if ((month + mo) % 12 == 0) {
+                        priceMonth = 12;
+                    } else {
+                        priceMonth = (month + mo) % 12;
+                    }
+                } else if (Math.ceil((month + mo) / 12) == 1) {
+                    priceYear = year;
+                    if ((month + mo) % 12 == 0) {
+                        priceMonth = 12;
+                    } else {
+                        priceMonth = (month + mo) % 12;
+                    }
+                } else {
+                    if (((month + mo) / 12) == 0) {
+                        priceYear = year - 1;
+                    } else {
+                        if (rep.test((month + mo) / 12)) {
+                            priceYear = year - (-Math.floor((month + mo) / 12));
+                        } else {
+                            priceYear = year - (-((month + mo) / 12) + 1);
+                        }
+                    }
+                    if ((month + mo) % 12 == 0) {
+                        priceMonth = 12;
+                    } else {
+                        priceMonth = 12 - (-(month + mo) % 12);
+                    }
+                }
+                // 填充标题
+                $('#title-year').html(priceYear + '年' + priceMonth + '月')
+                // 给今天添加标记
+                if (year == _setDate[0] && month == _setDate[1]) {
+                    $('#priceDate .day li').eq(firstDay + day - 1).addClass('day-select-today');
+                }
+                // 设置年份
+                date.setFullYear(priceYear);
+            }
+            // 属性、返回年月
+            that.pro.getDate = function () {
+                return [priceYear, priceMonth]
+            }
+        }
+        var syxD = new syxDate();
+        var dateplus = 0;
+        syxD.forDay(dateplus);
+        $('#price').click(function () {
+            syxD.forDay(--dateplus);
+            // console.log(syxD.getDate())
+        })
+        $('#next').click(function () {
+            syxD.forDay(++dateplus);
+            // console.log(syxD.getDate())
+        })
+        // 获取所有input价格
+        function getInputVal(){
+            var val = [];
+            $('.day li input').each(function(i,v){
+                if($(this).val()){
+                    var d = $(this).prev().html();
+                    var l = $(this).val();
+                    var jj = {
+                        date:d,
+                        val:l
+                    }
+                    val.push(jj);
+                }
+            })
+            return val;
+        }
+    </script>
+</body>
+
+</html>
